@@ -1,0 +1,9 @@
+# OS-related
+.DS_STORE
+
+# Python-related
+.venv
+__pycache__
+
+# Project-related
+/data
