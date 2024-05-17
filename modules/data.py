@@ -35,7 +35,7 @@ class CapstoneData:
         """
         self.data = self.data[self.data['Compound'].isin(sig_compounds)]
 
-def from_dirs(paths:list[str]) -> list[CapstoneData]:
+def from_dirs(paths:list[str], exp:bool=False) -> list[CapstoneData]:
     """
     Imports `xlsx` files from a list of parent directories.
     The trial numbers are assigned based on the order of directories.
@@ -45,12 +45,20 @@ def from_dirs(paths:list[str]) -> list[CapstoneData]:
         excel_files = glob.glob(os.path.join(path, '*.xlsx'))
         for file in excel_files:
             filename = os.path.basename(file).split(' ')
-            envr = filename[0]
-            medium = filename[1]
-            species = filename[2]
-            time = filename[3].rsplit('h')[0]
-            data = pd.read_excel(file, index_col='Peak')
-            
+            if exp:
+                envr = filename[0]
+                medium = 'LB'
+                species = filename[1]
+                time = filename[2].rsplit('h')[0]
+                data = pd.read_excel(file, index_col='Peak')
+                
+            else:
+                envr = filename[0]
+                medium = filename[1]
+                species = filename[2]
+                time = filename[3].rsplit('h')[0]
+                data = pd.read_excel(file, index_col='Peak')
+                
             output.append(
                 CapstoneData(
                     envr,
